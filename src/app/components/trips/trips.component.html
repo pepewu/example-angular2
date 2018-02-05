@@ -1,0 +1,79 @@
+<div class="row">
+    <div class="col-12 col-xl-3 layoutHeader">
+        <div class="sticky sticky-lg">
+            <header class="pageHeader">
+                <h1 class="pageHeader__title">Your Trips</h1>
+            </header>
+
+            <nav class="pageNav">
+                <button class="simpleBtn simpleBtn--primary" (click)="modalCreateTrip()">
+                    <i class="icon-plus"></i>Create new Trip</button>
+            </nav>
+
+            <countdown></countdown>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-9">
+        <ng-container *ngIf="trips.length">
+            <div class="row" [@listAnimation]="trips.length">
+
+                <article *ngFor="let trip of trips" class="col-12 animitem">
+                    <div class="listBox">
+                        <div class="listBox__nav">
+                            <a class="toolBtn toolBtn-primary" title="view trip" routerLink="/trips/tripview/{{trip.$key}}">
+                                <i class="icon-eye"></i>
+                            </a>
+                            <div>
+                                <a class="toolBtn" title="edit trip" routerLink="/trips/tripedit/{{trip.$key}}">
+                                    <i class="icon-cog"></i>
+                                </a>
+                                <button class="toolBtn" title="delete trip" (click)="removeTrip(trip.$key)">
+                                    <i class="icon-cancel"></i>
+                                </button>
+                            </div>
+                        </div>
+    
+                        <header class="listBox__header">
+                            <h2 class="listBox__title">{{ trip.name }}</h2>
+                            <ul class="listBox__details inline">
+                                <li>
+                                    <i class="icon-clock"></i>
+                                    <ng-container *ngIf="trip.countedStart">
+                                        {{ trip.countedStart | date:'y-MM-dd' }}
+                                    </ng-container>
+                                    <ng-container *ngIf="!trip.countedStart">
+                                        unscheduled
+                                    </ng-container>
+                                </li>
+                                <li>
+                                    <i class="icon-money"></i>
+                                    {{ (trip.budgetAssigned || 0) | currency:'USD':true }}
+                                </li>
+                            </ul>
+                        </header>
+                        
+                        <div class="listBox__content" *ngIf="trip.description">
+                            {{ trip.description }}
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="hasNoTrips">
+            <div class="nothingHere">
+                <i class="icon-flaneur"></i>
+                <p>
+                    You dont't have any trips in your library yet.
+                    <br>Start by adding new one.
+                </p>
+                <p class="nothingHere__hint">
+                    Trips are linked to cities. You should have some cities available first before creating a trip to this city. If you do not
+                    have any cities yet, go to your Places library and create some.
+                </p>
+                <button class="simpleBtn simpleBtn--primary" (click)="modalCreateTrip()">Create new Trip</button>
+            </div>
+        </ng-container>
+    </div>
+</div>

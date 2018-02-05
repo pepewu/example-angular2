@@ -1,0 +1,77 @@
+<div class="row pageRow">
+    <div class="col-12 col-xl-3 layoutHeader">
+        <div class="sticky sticky-lg">
+            <header class="pageHeader">
+                <h1 class="pageHeader__title">Places library</h1>
+            </header>
+            
+            <nav class="pageNav">
+                <a routerLink="/library/cityedit" class="simpleBtn simpleBtn--primary"><i class="icon-plus"></i>Add City</a><br>
+                <a routerLink="/library/placeedit" class="simpleBtn simpleBtn--primary" [hidden]="hasNoCities"><i class="icon-plus"></i>Add CityPlace</a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-9">
+        <ng-container *ngIf="cities.length">
+            <div class="row" [@listAnimation]="cities.length">
+                <article *ngFor="let city of cities" class="col-12 col-md-12 animitem">
+                    <div class="listBox cityBox">
+                        <div class="cityColor" [style.background]="city.color"></div>
+                        <div class="listBox__nav">
+                            <a class="toolBtn toolBtn-primary" [style.background]="city.color" title="view city" routerLink="/library/cityview/{{city.$key}}">
+                                <i class="icon-eye"></i>
+                            </a>
+                            <div>
+                                <a class="toolBtn" title="edit city" routerLink="/library/cityedit/{{city.$key}}">
+                                    <i class="icon-cog"></i>
+                                </a>
+                                <button class="toolBtn" title="delete city" (click)="deleteCity(city, city.$key, city.name)">
+                                    <i class="icon-cancel"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <header class="listBox__header">
+                            <h2 class="listBox__title">{{ city.name }}</h2>
+                        </header>
+                        
+                        <div class="listBox__content">
+                            <ul class="listBox__details">
+                                <li>
+                                    <i class="icon-location"></i>
+                                    {{ countCityPlaces(city) || 0 }} places
+                                </li>
+                                <li>
+                                    <i class="icon-clock"></i>
+                                    scheduled visit:
+                                    <ng-container *ngIf="getNextVisit(city) | async as trips; else noTrips">
+                                        <time *ngFor="let trip of trips">{{trip.countedStart | date:'yyyy-MM-dd'}} <small>- <a routerLink="/trips/tripview/{{ trip.$key }}">{{ trip.name }}</a></small></time>
+                                    </ng-container>
+                                </li>
+                                <li>
+                                    <i class="icon-clock"></i>
+                                    last visited:
+                                    <ng-container *ngIf="getPrevVisit(city) | async as trips; else noTrips">
+                                        <time *ngFor="let trip of trips">{{trip.countedStart | date:'yyyy-MM-dd'}} <small>- <a routerLink="/trips/tripview/{{ trip.$key }}">{{ trip.name }}</a></small></time>
+                                    </ng-container>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="hasNoCities">
+            <div class="nothingHere">
+                <i class="icon-flaneur"></i>
+                <p>You dont't have any cities in your library yet.
+                    <br>Start by adding new one.</p>
+                <a routerLink="/library/cityedit" class="simpleBtn simpleBtn--primary">Add City</a>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<ng-template #noTrips>never</ng-template>

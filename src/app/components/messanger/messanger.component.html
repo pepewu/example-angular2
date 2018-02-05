@@ -1,0 +1,3 @@
+<div id="messanger" *ngIf="messages$ | async as msgs">
+    <div @fade *ngFor="let msg of msgs" class="message message-{{ msg.type }}">{{ msg.msg }}</div>
+</div>

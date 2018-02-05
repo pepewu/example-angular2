@@ -1,0 +1,97 @@
+<div class="row pageRow" *ngIf="trip">
+    <div class="col-12 col-xl-3 layoutHeader">
+        <div class="sticky sticky-lg">
+            <header class="pageHeader">
+                <h1 class="pageHeader__title">{{ trip.name || 'Loading...' }}</h1>
+            </header>
+    
+            <p>
+                budget assigned:
+                <strong>{{ (trip.budgetAssigned | currency:'USD':true) || 0}}</strong>
+            </p>
+            <nav class="pageNav">
+                <button class="simpleBtn simpleBtn--primary" (click)="editTripDetails()"><i class="icon-pencil"></i>Edit trip details</button>
+                <button class="simpleBtn simpleBtn--primary" (click)="createNewChapter()"><i class="icon-plus"></i>Add new trip chapter</button>
+            </nav>
+        </div>
+    </div>
+
+    <div class="col col-xl-9">
+        <ng-container *ngIf="chapters.length; else nothingHere">
+            <div [@listAnimation]="chapters.length">
+            <ng-container *ngFor="let chapter of chapters">
+                <div class="calendarCard animitem" *ngIf="chapter.type == 'dateHeader'">
+                    <span class="calendarCard__year">{{ chapter.startTimestamp | date:'y' }}</span>
+                    <span class="calendarCard__day">{{ chapter.startTimestamp | date:'dd' }}</span>
+                    <span class="calendarCard__month">{{ chapter.startTimestamp | date:'MMMM' }}</span>
+                </div>
+
+                <div *ngIf="chapter.type != 'dateHeader'" class="chapterCard chapterCard--{{ chapter.type }} animitem">
+                    <div class="chapterCard__typebar" *ngIf="chapter.travelCity" [style.background]="citiesData[chapter.travelCity].color" [class.editing]="(editingDetails || editingPlan) && chapter.id == chapterId">
+                        <i class="icon-city-hall"></i>
+                    </div>
+    
+                    <div class="chapterCard__typebar" *ngIf="chapter.type == 'travel'" [class.editing]="(editingDetails || editingPlan) && chapter.id == chapterId">
+                        <i class="icon-{{ travelTypes[chapter.travelType].icon }}"></i>
+                    </div>
+    
+                    <div class="chapterCard__typebar" *ngIf="chapter.type == 'bedtime'" [class.editing]="(editingDetails || editingPlan) && chapter.id == chapterId">
+                        <i class="icon-lodging"></i>
+                    </div>
+    
+                    <div class="chapterCard__contentWrap">
+                        <div class="chapterCard__header">
+                            <ul>
+                                <li>
+                                    <i class="icon-clock"></i>
+                                    {{ chapter.startTimestamp | date:'HH:mm' }}
+                                </li>
+                                <li *ngIf="chapter.budget">
+                                    <i class="icon-credit-card"></i>
+                                    {{ chapter.budget | currency:'USD':true }}
+                                </li>
+                                <li class="type">{{ chapter.type | uppercase }}</li>
+                            </ul>
+                        </div>
+                        <div class="chapterCard__content">
+                            <h2>{{ chapter.title }}</h2>
+                            
+                            <nav class="chapterCard__editBtns" *ngIf="! editingDetails && ! editingPlan">
+                                <button class="simpleBtn simpleBtn--primary simpleBtn--sm" (click)="startEditingDetails(chapter.id)">
+                                    <i class="icon-pencil"></i>Edit details
+                                </button>
+                                <ng-container *ngIf="chapter.travelCity">
+                                    <button class="simpleBtn simpleBtn--primary simpleBtn--sm" (click)="startEditingPlan(chapter)">
+                                        <i class="icon-calendar"></i>Edit plan
+                                    </button>
+                                </ng-container>
+                                <button class="simpleBtn simpleBtn--danger simpleBtn--sm" (click)="removeChapter(chapter.id)">
+                                    <i class="icon-cancel"></i>Delete
+                                </button>
+                            </nav>
+                            
+                            <div *ngIf="chapter.id == chapterId">
+                                <trip-chapter-edit @slideUpDown *ngIf="editingDetails" [tripId]="tripId" [chapterId]="chapterId" (done)="doneEditing()">
+                                </trip-chapter-edit>
+                            
+                                <trip-plan-edit @slideUpDown *ngIf="editingPlan" [tripId]="tripId" [chapterId]="chapterId" [cityId]="cityId" [chapterData]="chapter" (done)="doneEditing()">
+                                </trip-plan-edit>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </ng-container>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<ng-template #nothingHere>
+    <div class="nothingHere" *ngIf="hasNoContent">
+        <i class="icon-flaneur"></i>
+        <p>You haven't planned anything for this trip yet.
+            <br>Start by adding first chapter.</p>
+        <button class="simpleBtn simpleBtn--primary" (click)="createNewChapter()">Add new trip chapter</button>
+    </div>
+</ng-template>

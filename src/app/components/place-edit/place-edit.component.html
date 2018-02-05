@@ -1,0 +1,98 @@
+<div class="row pageRow mapLayout mapLayout--right">
+    <div class="col-lg-6 mapLayout__map">
+        <div id="mapContainer" class="mapContainer">
+            <map-addmarker [existingCoords]="[place.lat, place.lng]" (newCoords)="handleCoords($event)"></map-addmarker>
+        </div>
+    </div>
+
+    <div class="col-lg-6 mapLayout__content">
+        <header class="pageHeader pageHeader--icon">
+            <h1 class="pageHeader__title">
+                <span class="pageHeader__icon">
+                    <i class="icon-location"></i>
+                </span>
+                <ng-container *ngIf="!id">Add new place</ng-container>
+                <ng-container *ngIf="id">Edit place</ng-container>
+            </h1>
+        </header>
+
+        <form #f="ngForm" (ngSubmit)="submit(f.value)" class="contentBox contentBox--default">
+            <div class="alert alert-danger" *ngIf="!cities.length">
+                <h3>You do not have any cities in your library</h3>
+                <p>You will not be able to add place now, because every place has to be connected with a city. Please add your city first, then go back here.</p>
+                <a routerLink="/library/cityedit" class="simpleBtn simpleBtn--primary">Add city</a>
+            </div>
+            <div class="form-group">
+                <label for="placeName">Place name</label>
+                <input #placeName="ngModel" [ngModel]="place.name" name="name" type="text" class="form-control" id="placeName">
+                <ng-container *ngIf="placeName.invalid && placeName.touched">
+                    <div class="invalid-feedback" *ngIf="placeName.errors.required">
+                        Please provide a place name.
+                    </div>
+                </ng-container>
+            </div>
+
+            <div class="form-group">
+                <label>Place location</label>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <input #placeLoc="ngModel" [ngModel]="place.lat" name="lat" type="text" class="form-control" required readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <input [ngModel]="place.lng" name="lng" type="text" class="form-control" required readonly>
+                    </div>
+                    <div class="col-12 form-text text-muted">
+                        Put marker on a place which you consider the place location.
+                    </div>
+                </div>
+                <ng-container *ngIf="placeLoc.invalid">
+                    <div class="invalid-feedback" *ngIf="placeLoc.errors.required">
+                        Please select place location on the map.
+                    </div>
+                </ng-container>
+            </div>
+
+            <div class="form-group">
+                <label for="placeDescription">Place description</label>
+                <textarea [ngModel]="place.description" name="description" class="form-control" id="placeDescription" rows="10"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="placeCity">City</label>
+                <select #plc="ngModel" [ngModel]="place.city" name="city" class="form-control" id="placeCity" required [disabled]="id">
+                    <option value=""></option>
+                    <ng-container *ngIf="cities.length">
+                        <option *ngFor="let city of cities" value="{{ city.$key }}">{{ city.name }}</option>
+                    </ng-container>
+                </select>
+                <ng-container *ngIf="plc.invalid && plc.touched">
+                    <div class="invalid-feedback" *ngIf="plc.errors.required">
+                        Please select a city to which this place belongs.
+                    </div>
+                </ng-container>
+            </div>
+
+            <div class="form-group">
+                <label for="placeType">Place type</label>
+
+                <div class="placeLabel" *ngFor="let type of types" (click)="setPlaceType(type.slug)" [class.active]="type.slug == place.type">
+                    <span class="placeTypeIcon" [style.color]="type.iconColor" [style.background]="type.markerColor"><i class="icon-{{ type.icon }}"></i></span>
+                    <span>{{ type.name }}</span>
+                </div>
+
+                <input #placeType="ngModel" [ngModel]="place.type" name="type" type="hidden" class="form-control" required>
+                <ng-container *ngIf="placeType.invalid">
+                    <div class="invalid-feedback" *ngIf="placeType.errors.required">
+                        Please select a place type.
+                    </div>
+                </ng-container>
+            </div>
+
+            <button class="simpleBtn simpleBtn--primary" [disabled]="f.invalid">
+                <ng-container *ngIf="!id">Create Place</ng-container>
+                <ng-container *ngIf="id">Update Place</ng-container>
+            </button>
+        </form>
+    </div>
+</div>

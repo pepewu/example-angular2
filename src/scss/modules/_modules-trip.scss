@@ -1,0 +1,157 @@
+.chapterCard {
+    margin: 20px 0;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: $box-shadow;
+
+    .modalHeader {
+        display: none;
+    }
+    &__typebar {
+        font-size: 32px;
+        line-height: 36px;
+        text-align-last: center;
+        background: $color-primary-light;
+        padding: 5px 10px;
+
+        &.editing {
+            background-color: $yellow !important;
+            position: relative;
+        }
+    }
+    &__header {
+        padding: 0;
+        border-bottom: 1px solid $color-border-light;
+
+        ul {
+            display: block;
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+
+        }
+        li {
+            display: inline-block;
+            margin: 0;
+            padding: 10px 15px;
+            border-left: 1px solid $color-border-light;
+
+            &:first-child {
+                border: none;
+            }
+        }
+
+        @include media-breakpoint-down(sm) {
+            .type {
+                display: none;
+            }
+        }
+    }
+    &__contentWrap {
+        flex-grow: 1;
+    }
+    &__content {
+        padding: 15px 20px;
+    }
+    &__section {
+        margin: 25px 0;
+
+        footer {
+            margin-top: 10px;
+        }
+    }
+    &__editBtns {
+        margin-top: 20px;
+        .simpleBtn {
+            margin: 0 2px 5px 0;
+        }
+    }
+
+    &--travel {
+        // background-color: $color-travel;
+    }
+
+    &--bedtime {
+        .chapterCard__typebar {
+            background-color: $color-bedtime;
+        }
+    }
+
+    @include media-breakpoint-up(sm) {
+        display: flex;
+
+        &__typebar {
+            width: 50px;
+            font-size: 32px;
+            line-height: 36px;
+            text-align-last: center;
+            background: $color-primary-light;
+            padding: 20px 0;
+
+            &.editing {
+                &::before {
+                    content: '';
+                    border: 5px dashed #222;
+                    width: 0;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                }
+            }
+        }
+    }
+}
+
+.tripTL {
+    @include media-breakpoint-up(lg) {
+        position: relative;
+    
+        &__dayHeader {
+            position: relative;
+        }
+    
+        &__dayHeader__l, &__dayHeader__r {
+            position: relative;
+        }
+        
+        &__branch {
+            position: relative;
+    
+            &::after {
+                content: '';
+                display: block;
+                background-color: $color-border;
+                width: 4px;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 50%;
+                z-index: -1;
+            }
+        }
+    
+        &__branch--r, &__branch--l {
+            &::before {
+                content: '';
+                width: 50%;
+                height: 4px;
+                background-color: $color-border;
+                display: block;
+                position: absolute;
+                top: 40px;
+            }
+        }
+    
+        &__branch--r {
+            &::before {
+                right: 0;
+            }
+        }
+    
+        &__branch--l {
+            &::before {
+                left: 0;
+            }
+        }
+    }
+}

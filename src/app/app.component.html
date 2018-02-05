@@ -1,0 +1,49 @@
+<header class="appHeader">
+    <nav>
+        <ul>
+            <li>
+                <a routerLink="/" class="appHeader__logo appHeader__item">
+                    <img src="/assets/img/flaneur.svg" alt="Flaneur">
+                </a>
+            </li><ng-container *ngIf="loggedin; else anonymous"><li>
+                    <a routerLinkActive="active" routerLink="/library" class="appHeader__item">
+                        <i class="icon-map" aria-hidden="true"></i>
+                        Places
+                    </a>
+                </li><li>
+                    <a routerLinkActive="active" routerLink="/trips" class="appHeader__item">
+                        <i class="icon-globe" aria-hidden="true"></i>
+                        Trips
+                    </a>
+                </li><!--<li>
+                    <a routerLinkActive="active" routerLink="/settings" class="appHeader__item">
+                        <i class="icon-cog" aria-hidden="true"></i>
+                        Settings
+                    </a>
+                </li>--><li>
+                    <a routerLinkActive="active" href="/login" (click)="logout()" class="appHeader__item">
+                        <i class="icon-logout" aria-hidden="true"></i>
+                        Logout
+                    </a>
+                </li>
+            </ng-container>
+        </ul>
+    </nav>
+
+    <ng-template #anonymous>
+        <li>
+            <a routerLink="/login" class="appHeader__item">
+                <i class="icon-login" aria-hidden="true"></i>
+                Login
+            </a>
+        </li>
+    </ng-template>
+</header>
+
+<div class="container-fluid page">
+    <router-outlet></router-outlet>
+    <modal-container></modal-container>
+    <alert></alert>
+</div>
+
+<messanger></messanger>

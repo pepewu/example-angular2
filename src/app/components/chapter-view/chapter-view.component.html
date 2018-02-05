@@ -1,0 +1,90 @@
+<div class="row pageRow mapLayout mapLayout--right">
+    <div class="col-lg-6 mapLayout__map">
+        <div id="mapContainer" class="mapContainer" *ngIf="chapterPlaces.length">
+            <map-viewmarkers [markersData]="markersData" (clickedMarker)="modalPlaceView($event)"></map-viewmarkers>
+        </div>
+    </div>
+
+    <div class="col-lg-6 mapLayout__content">
+        <header class="pageHeader pageHeader--icon">
+            <h1 class="pageHeader__title">
+                <span class="pageHeader__icon" [style.background]="city.color">
+                    <i class="icon-city-hall"></i>
+                </span>
+                <small>{{ (city.name | uppercase) || 'Loading...' }}:</small>
+                {{ chapter.title }}
+            </h1>
+        </header>
+
+        <section class="contentSection" *ngIf="chapterPlaces.length">
+            <h2 class="contentSection__header">
+                Places
+            </h2>
+
+            <div class="contentBox">
+                <div class="placeEntry" *ngFor="let place of chapterPlaces">
+                    <span class="placeTypeIcon" [style.color]="placeTypes[place.type].iconColor" [style.background]="placeTypes[place.type].markerColor">
+                        <i class="icon-{{ placeTypes[place.type].icon }}"></i>
+                    </span>
+
+                    <div title="View place details" class="placeEntry__title" (click)="modalPlaceView(place.$key)">{{ place.name }}</div>
+
+                    <span title="Center map to this place" class="placeTypeIcon placeEntry__marker" (click)="zoomToMarker(place)">
+                        <i class="icon-location"></i>
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <section class="contentSection" *ngIf="chapter.events">
+            <h2 class="contentSection__header">
+                Events
+            </h2>
+            
+            <div class="contentBox contentBox--default">
+                <table class="dataTable dataTable--simpler">
+                    <thead>
+                        <tr>
+                            <th class="info">
+                                <i class="icon-clock"></i>
+                            </th>
+                            <th class="info">
+                                <i class="icon-money"></i>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tr *ngFor="let event of chapter.events">
+                        <td class="info">{{ event.start }}</td>
+                        <td class="info">{{ event.cost | currency:'USD':true }}</td>
+                        <td>{{ event.name }}</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <section class="contentSection" *ngIf="chapter.costs">
+            <h2 class="contentSection__header">
+                Costs
+            </h2>
+
+            <div class="contentBox contentBox--default">
+                <table class="dataTable dataTable--simpler">
+                    <thead>
+                        <tr>
+                            <th class="info">
+                                <i class="icon-money"></i>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tr *ngFor="let cost of chapter.costs">
+                        <td class="info">{{ cost.cost | currency:'USD':true }}</td>
+                        <td>{{ cost.name }}</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+    </div>
+</div>

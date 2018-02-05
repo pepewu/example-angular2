@@ -1,0 +1,31 @@
+<div class="row pageRow welcomePage">
+    <div class="col-12">
+        <img src="/assets/img/flaneur.svg" class="logo" alt="">
+        <h1>
+            <i class="fa fa-subway" aria-hidden="true"></i>
+            Flaneur<small style="font-size:14px;line-height:20px;display:block;">Trip Planner<br>{{environment.version}}</small>
+        </h1>
+        
+        <ng-container *ngIf="! auth.user$ | async as currentuser">
+            <p>Welcome to Flaneur. Login to manage your trips.</p>
+            <a routerLink="/login" class="simpleBtn simpleBtn--primary">Login</a>
+        </ng-container>
+
+        <countdown *ngIf="auth.user$ | async as currentuser"></countdown>
+
+        <nav class="pageNav">
+            <h3>What is Flaneur and how to use it?</h3>
+            <a routerLink="/about" class="simpleBtn simpleBtn--primary">Read introduction</a>
+        </nav>
+    </div>
+
+    <div class="theme" style="display: none">
+        <div class="theme__c2"></div>
+        <div class="theme__c1"></div>
+        <div class="theme__c3"></div>
+        <div class="theme__c4"></div>
+        <div class="theme__c5"></div>
+        <div class="theme__c6"></div>
+        <div class="theme__c7"></div>
+    </div>
+</div>

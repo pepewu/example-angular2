@@ -1,0 +1,36 @@
+<h1 class="modalHeader">
+    <ng-container *ngIf="!event.id">Create new event</ng-container>
+    <ng-container *ngIf="event.id">Edit event details</ng-container>
+</h1>
+
+<form #f="ngForm" (ngSubmit)="submit()">
+    <div class="form-group">
+        <label for="eventName">Event name</label>
+        <input #eventName="ngModel" [(ngModel)]="event.name" name="name" type="text" class="form-control" id="eventName" required>
+        <ng-container *ngIf="eventName.invalid && eventName.touched">
+            <div class="invalid-feedback" *ngIf="eventName.errors.required">
+                Please provide event name.
+            </div>
+        </ng-container>
+    </div>
+
+    <div class="form-group">
+        <label for="eventCost">Event cost</label>
+        <input [(ngModel)]="event.cost" name="cost" type="text" class="form-control" id="eventCost">
+    </div>
+
+    <div class="form-group">
+        <label for="eventStart">Event start time</label>
+        <input [(ngModel)]="event.start" name="start" placeholder="HH:mm" type="text" class="form-control" id="eventStart">
+    </div>
+
+    <div class="form-group">
+        <label for="eventDescription">Event description</label>
+        <textarea [(ngModel)]="event.description" name="description" class="form-control" id="eventDescription" rows="6"></textarea>
+    </div>
+
+    <button class="simpleBtn simpleBtn--primary" [disabled]="f.invalid">
+        <ng-container *ngIf="!event.id">Create Event</ng-container>
+        <ng-container *ngIf="event.id">Update Event</ng-container>
+    </button>
+</form>

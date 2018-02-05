@@ -1,0 +1,26 @@
+<h1 class="modalHeader">
+    <ng-container *ngIf="trip.id">Update Trip details</ng-container>
+    <ng-container *ngIf="! trip.id">Create new Trip</ng-container>
+</h1>
+
+<form #f="ngForm" (ngSubmit)="submit(f.value)">
+    <div class="form-group">
+        <label for="tripName">Trip name</label>
+        <input #tripName="ngModel" [(ngModel)]="trip.name" name="name" type="text" class="form-control" id="tripName" required>
+        <ng-container *ngIf="tripName.invalid && tripName.touched">
+            <div class="invalid-feedback" *ngIf="tripName.errors.required">
+                Please provide a trip name.
+            </div>
+        </ng-container>
+    </div>
+
+    <div class="form-group">
+        <label for="tripDescription">Trip description</label>
+        <textarea [(ngModel)]="trip.description" name="description" class="form-control" id="tripDescription" rows="5"></textarea>
+    </div>
+
+    <button class="simpleBtn simpleBtn--primary" [disabled]="f.invalid">
+        <ng-container *ngIf="trip.id">Save changes</ng-container>
+        <ng-container *ngIf="! trip.id">Create new Trip</ng-container>
+    </button>
+</form>

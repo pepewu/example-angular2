@@ -1,0 +1,65 @@
+<div class="row pageRow mapLayout mapLayout--right">
+    <div class="col-lg-6 mapLayout__map">
+        <div *ngIf="markersData.markers.length > 0" id="mapContainer" class="mapContainer">
+            <map-viewmarkers [markersData]="markersData" (clickedMarker)="modalPlaceView($event)"></map-viewmarkers>
+        </div>
+        <ng-container *ngIf="hasNoPlaces">
+            <div class="nothingHere">
+                <i class="icon-flaneur"></i>
+                <p>You don't have any places yet.
+                    <br>Start by adding first place.</p>
+                <a class="simpleBtn simpleBtn--primary" routerLink="/library/placeedit">Add new place</a>
+            </div>
+        </ng-container>
+    </div>
+
+    <div class="col-lg-6 mapLayout__content">
+        <header class="pageHeader pageHeader--icon">
+            <h1 class="pageHeader__title">
+                <span class="pageHeader__icon" [style.background]="city.color">
+                    <i class="icon-city-hall"></i>
+                </span>
+                {{ city.name || 'Loading...' }}
+            </h1>
+        </header>
+
+        <div class="headerTools">
+            <div class="headerTools__row">
+                <h2 class="headerTools__title">Tools:</h2>
+                <a routerLink="/library/cityedit/{{ city.$key }}" class="simpleBtn">
+                    <i class="icon-pencil"></i>Edit city
+                </a><a routerLink="/library/placeedit/" class="simpleBtn">
+                    <i class="icon-plus"></i>Add new place
+                </a>
+            </div>
+            <div class="headerTools__row" *ngIf="availableTypes.length > 1">
+                <h2 class="headerTools__title">Filter:</h2>
+                <div *ngFor="let type of availableTypes" class="placeTypeIcon typesFilter__filter" [style.color]="type.iconColor" [style.background]="type.markerColor"
+                    (click)="handleFilterClick(type)" [class.inactive]="type.inactive">
+                    <i class="icon-{{ type.icon }}"></i>
+                </div>
+            </div>
+        </div>
+
+
+        <section class="contentSection" *ngFor="let placesGroup of viewData">
+            <h2 class="contentSection__header">
+                {{ placesGroup.group.name }}
+            </h2>
+
+            <div class="contentBox">
+                <div class="placeEntry" *ngFor="let place of placesGroup.places">
+                    <span class="placeTypeIcon" [style.color]="placesGroup.group.iconColor" [style.background]="placesGroup.group.markerColor">
+                        <i class="icon-{{ placesGroup.group.icon }}"></i>
+                    </span>
+                    
+                    <div title="View place details" class="placeEntry__title" (click)="modalPlaceView(place.$key)">{{ place.name }}</div>
+                    
+                    <span title="Center map to this place" class="placeTypeIcon placeEntry__marker" (click)="zoomToMarker(place)">
+                        <i class="icon-location"></i>
+                    </span>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

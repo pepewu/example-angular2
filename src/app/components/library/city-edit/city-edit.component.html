@@ -1,0 +1,76 @@
+<div class="row pageRow mapLayout mapLayout--right">
+    <div class="col-lg-6 mapLayout__map">
+        <div id="mapContainer" class="mapContainer">
+            <map-addmarker [existingCoords]="[city.lat, city.lng]" (newCoords)="handleCoords($event)"></map-addmarker>
+        </div>
+    </div>
+
+    <div class="col-lg-6 mapLayout__content">
+        <header class="pageHeader pageHeader--icon">
+            <h1 class="pageHeader__title">
+                <span class="pageHeader__icon" [style.background]="city.color">
+                    <i class="icon-city-hall"></i>
+                </span>
+                <ng-container *ngIf="!id">Add new city</ng-container>
+                <ng-container *ngIf="id">Edit city</ng-container>
+            </h1>
+        </header>
+
+        <form #f="ngForm" (ngSubmit)="submit(f.value)" class="contentBox contentBox--default">
+            <div class="form-group">
+                <label for="cityName">City name</label>
+                <input #cityName="ngModel" [ngModel]="city.name" name="name" type="text" class="form-control" id="cityName" required>
+                <ng-container *ngIf="cityName.invalid && cityName.touched">
+                    <div class="invalid-feedback" *ngIf="cityName.errors.required">
+                        Please provide a city name.
+                    </div>
+                </ng-container>
+            </div>
+
+            <div class="form-group">
+                <label>City center location</label>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <input #cityLoc="ngModel" [ngModel]="city.lat" name="lat" type="text" class="form-control" required readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <input [ngModel]="city.lng" name="lng" type="text" class="form-control" required readonly>
+                    </div>
+                    <div class="col-12 form-text text-muted">
+                        Put marker on a place which you consider the center of the city.
+                    </div>
+                </div>
+                <ng-container *ngIf="cityLoc.invalid">
+                    <div class="invalid-feedback" *ngIf="cityLoc.errors.required">
+                        Please select city center location on the map.
+                    </div>
+                </ng-container>
+            </div>
+
+            <div class="form-group">
+                <label>City color</label>
+                
+                <div class="colorsList" *ngIf="colors.length > 0">
+                    <div *ngFor="let color of colors" [style.background]="color.value" [class.active]="color.active" (click)="setColor(color.value)"></div>
+                </div>
+                <input #cityColor="ngModel" [ngModel]="city.color" name="color" type="hidden" class="form-control" required>
+                <ng-container *ngIf="cityColor.invalid">
+                    <div class="invalid-feedback" *ngIf="cityColor.errors.required">
+                        Please select city color.
+                    </div>
+                </ng-container>
+            </div>
+
+            <div class="form-group">
+                <label for="cityDescription">City description</label>
+                <textarea [ngModel]="city.description" name="description" class="form-control" id="cityDescription" rows="10"></textarea>
+            </div>
+
+            <button class="simpleBtn simpleBtn--primary" [disabled]="f.invalid">
+                <ng-container *ngIf="!id">Create City</ng-container>
+                <ng-container *ngIf="id">Update City</ng-container>
+            </button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+body {
+    // background: $color-primary url('https://www.toptal.com/designers/subtlepatterns/patterns/concrete_wall_2.png') center center repeat;
+    // background: $color-primary url('https://www.toptal.com/designers/subtlepatterns/patterns/frenchstucco.png') center center repeat;
+    // background: $color-primary url('https://www.toptal.com/designers/subtlepatterns/patterns/subtle_grunge.png') center center repeat;
+    background: $color-primary-light url($bgimage) center center repeat;
+    background-attachment: fixed;
+    // background-size: cover;
+    font-family: 'Source Sans Pro', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: $color-primary-text;
+    padding-top: $height-appheader-mobi;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    @include media-breakpoint-up(lg) {
+        padding-top: 0;
+        padding-left: $width-appheader-desktop;
+    }
+}
+
+h1, .h1 {
+    font-size: 32px;
+    line-height: 1.2;
+}
+h2, .h2 {
+    font-size: 24px;
+    line-height: 1.2;
+}
+h3, .h3 {
+    font-size: 20px;
+    line-height: 1.2;
+}
+
+html, body {
+    min-height: 100vh;
+}
+app-root {
+    display: flex;
+    min-height: 100%;
+
+    @include media-breakpoint-up(xl) {
+        min-height: 100vh;
+    }
+}
+
+a {
+    color: $color-primary-text;
+    text-decoration: underline;
+
+    &:hover, &:focus, &:active {
+        color: $color-primary-text;
+        text-decoration: none;
+    }
+}
+
+.btn {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.sticky {
+
+    &.sticky-lg {
+        @include media-breakpoint-up(lg) {
+            position: sticky;
+            top: 0;
+        }
+    }
+}
+
+#messanger {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    width: 300px;
+    z-index: 200;
+}
+
+.message {
+    display: block;
+    width: 100%;
+    padding: 20px;
+    background-color: $gray-700;
+    margin-top: 10px;
+
+    &-success {
+        background-color: $green;
+        color: #fff;
+    }
+    &-danger {
+        background-color: $red;
+        color: #fff;
+    }
+    &-warning {
+        background-color: $yellow;
+        color: #000;
+    }
+    &-info {
+        background-color: $blue;
+        color: #fff;
+    }
+}
+
+.invalid-feedback {
+    display: block;
+}

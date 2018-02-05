@@ -1,0 +1,91 @@
+<div id="mapContainer" class="mapContainer" style="height: 300px;background:#ccc;">
+     <map-viewmarkers [markersData]="markersData" (clickedMarker)="handleMarkerClick($event)"></map-viewmarkers>
+</div>
+
+<section class="chapterCard__section">
+    <h3>List of places</h3>
+    <table class="dataTable" *ngIf="selectedPlaces.length else noPlaces">
+        <tr *ngFor="let place of selectedPlaces">
+            <td class="info placeIcon">
+                <span class="placeTypeIcon" [style.color]="placeTypes[place.type].iconColor" [style.background]="placeTypes[place.type].markerColor" style="font-family:fontello;margin:0;">
+                    {{placeTypes[place.type].markerLabel}}
+                </span>
+            </td>
+            <td>
+                {{ place.name }}
+            </td>
+            <td class="info"><button class="simpleBtn simpleBtn--danger" (click)="removePlace(place.$key)" title="remove"><i class="icon-cancel"></i></button></td>
+        </tr>
+    </table>
+
+    <ng-template #noPlaces>
+        No places.
+    </ng-template>
+</section>
+
+<section class="chapterCard__section">
+    <h3>List of events</h3>
+    <table class="dataTable" *ngIf="chapterData.events.length else noEvents">
+        <thead>
+            <tr>
+                <th class="info"><i class="icon-clock"></i></th>
+                <th class="info"><i class="icon-money"></i></th>
+                <th></th>
+                <th class="info"></th>
+            </tr>
+        </thead>
+        <tr *ngFor="let event of chapterData.events">
+            <td class="info">{{ event.start }}</td>
+            <td class="info">{{ event.cost | currency:'USD':true }}</td>
+            <td>{{ event.name }}</td>
+            <td class="info">
+                <button class="simpleBtn simpleBtn--success" (click)="popEventModal(event)" title="edit"><i class="icon-pencil"></i></button>
+                <button class="simpleBtn simpleBtn--danger" (click)="removeEvent(event.id)" title="remove"><i class="icon-cancel"></i></button>
+            </td>
+        </tr>
+    </table>
+
+    <ng-template #noEvents>
+        No events.
+    </ng-template>
+
+    <footer>
+        <button class="simpleBtn simpleBtn--primary" (click)="popEventModal({})"><i class="icon-plus"></i>Add Event</button>
+    </footer>
+</section>
+
+<section class="chapterCard__section">
+    <h3>List of costs</h3>
+    <table class="dataTable" *ngIf="chapterData.costs.length else noCosts">
+        <thead>
+            <tr>
+                <th class="info">
+                    <i class="icon-money"></i>
+                </th>
+                <th></th>
+                <th class="info"></th>
+            </tr>
+        </thead>
+        <tr *ngFor="let cost of chapterData.costs">
+            <td class="info">{{ cost.cost | currency:'USD':true }}</td>
+            <td>{{ cost.name }}</td>
+            <td class="info">
+                <button class="simpleBtn simpleBtn--success" (click)="popCostModal(cost)" title="edit"><i class="icon-pencil"></i></button>
+                <button class="simpleBtn simpleBtn--danger" (click)="removeCost(cost.id)" title="remove"><i class="icon-cancel"></i></button>
+            </td>
+        </tr>
+    </table>
+
+    <ng-template #noCosts>
+        No costs.
+    </ng-template>
+
+    <footer>
+        <button class="simpleBtn simpleBtn--primary" (click)="popCostModal({})"><i class="icon-plus"></i>Add Cost</button>
+    </footer>
+</section>
+
+<footer>
+    <button class="simpleBtn simpleBtn--success" (click)="updateChapter()">Save changes</button>
+    <button class="simpleBtn simpleBtn--danger" (click)="doneEditing()">Cancel</button>
+</footer>

@@ -1,0 +1,19 @@
+    <div class="alertModal" [@popup]="visible ? 'poppedIn' : 'poppedOut'">
+        <div class="alertBox">
+            <div class="alertBox__header">
+                <i class="icon-trash"></i>
+            </div>
+            <div class="alertBox__content">
+                <img src="/assets/img/flaneur-danger.svg" alt="Flaneur">
+                <div [innerHTML]="msg" *ngIf="msg"></div>
+                This operation cannot be undone.
+                <br>Are you sure you want to do this?
+            </div>
+            <div class="alertBox__btns">
+                <button class="simpleBtn simpleBtn--success" (click)="yes()">
+                    <i class="icon-ok"></i>YES please!</button>
+                <button class="simpleBtn simpleBtn--danger" (click)="godno()">NO, cancel!</button>
+            </div>
+        </div>
+    </div>
+    <div class="modalBackground" [@popupBg]="visible ? 'poppedIn' : 'poppedOut'"></div>

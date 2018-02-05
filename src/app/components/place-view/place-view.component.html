@@ -1,0 +1,23 @@
+<header class="pageHeader pageHeader--icon modalHeader">
+    <h1 class="pageHeader__title">
+        <span class="pageHeader__icon" [style.background]="placeData.markerColor" [style.color]="placeData.iconColor">
+            <i class="icon-{{ placeData.icon }}"></i>
+        </span>
+        {{ place.name || 'Loading...' }}
+    </h1>
+</header>
+
+<p [innerHTML]="place.description | nl2br"></p>
+
+<div class="headerTools headerTools--atBottom">
+    <div class="headerTools__row">
+        <div class="headerTools__item">
+            <a routerLink="/library/placeedit/{{place.$key}}" class="simpleBtn" (click)="closeModal()">
+                <i class="icon-pencil"></i>Edit this place
+            </a>
+            <button class="simpleBtn" (click)="deletePlace(place)">
+                <i class="icon-cancel"></i>Delete this place
+            </button>
+        </div>
+    </div>
+</div>

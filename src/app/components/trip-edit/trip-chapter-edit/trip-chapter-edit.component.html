@@ -1,0 +1,88 @@
+<h1 class="modalHeader">
+    Add new trip chapter
+</h1>
+<form #f="ngForm" (ngSubmit)="submit(f.value)">
+
+    <div class="form-group" *ngIf="! _chapterId">
+        <label for="chapterType">Chapter type</label>
+        <select #chapterType="ngModel" [(ngModel)]="chapter.type" name="type" class="form-control" id="chapterType" required>
+            <option value="travel">Travel</option>
+            <option value="flanering">Flanering</option>
+            <option value="bedtime">Bed time</option>
+        </select>
+        <ng-container *ngIf="chapterType.invalid && chapterType.touched">
+            <div class="invalid-feedback" *ngIf="chapterType.errors.required">
+                Please select a chapter type.
+            </div>
+        </ng-container>
+    </div>
+    
+    <div class="form-group" *ngIf="chapter.type == 'travel'">
+        <label for="travelType">Travel type</label>
+        <select #travelType="ngModel" [(ngModel)]="chapter.travelType" name="travelType" class="form-control" id="travelType" required>
+            <option value=""></option>
+            <option *ngFor="let type of travelTypes$ | async" value="{{ type.$key }}">{{ type.name }}</option>
+        </select>
+        <ng-container *ngIf="travelType.invalid && travelType.touched">
+            <div class="invalid-feedback" *ngIf="travelType.errors.required">
+                Please select a travel type.
+            </div>
+        </ng-container>
+    </div>
+    
+    <div class="form-group" *ngIf="chapter.type == 'flanering'">
+        <label for="travelCity">Travel city</label>
+        <select #travelCity="ngModel" [(ngModel)]="chapter.travelCity" name="travelCity" class="form-control" id="travelCity" required>
+            <option value=""></option>
+            <option *ngFor="let city of cities$ | async" value="{{ city.$key }}">{{ city.name }}</option>
+        </select>
+        <ng-container *ngIf="travelCity.invalid && travelCity.touched">
+            <div class="invalid-feedback" *ngIf="travelCity.errors.required">
+                Please select a city.
+            </div>
+        </ng-container>
+    </div>
+
+    <div class="form-group">
+        <label for="chapterTitle">Title</label>
+        <input #chapterTitle="ngModel" [(ngModel)]="chapter.title" name="title" type="text" class="form-control" id="chapterTitle" required>
+        <ng-container *ngIf="chapterTitle.invalid && chapterTitle.touched">
+            <div class="invalid-feedback" *ngIf="chapterTitle.errors.required">
+                Please provide a chapter title.
+            </div>
+        </ng-container>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="startDate">Start date</label>
+                <input #chapterStart="ngModel" [(ngModel)]="chapter.startDate" name="startDate" type="text" placeholder="YYYY-MM-DD HH:mm" class="form-control" id="startDate" #chapterDP (focus)="date1.open()" required>
+                <datepicker #date1 [ownerInput]="chapterDP" [(initDate)]="chapter.startDate"></datepicker>
+                <ng-container *ngIf="chapterStart.invalid && chapterStart.touched">
+                    <div class="invalid-feedback" *ngIf="chapterStart.errors.required">
+                        Please set date for this chapter.
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+
+        <div class="col-md-6" *ngIf="chapter.type == 'travel' || chapter.type == 'bedtime'">
+            <div class="form-group">
+                <label for="chapterBudget">
+                    <ng-container *ngIf="chapter.type == 'travel'">Tickets cost</ng-container>
+                    <ng-container *ngIf="chapter.type == 'bedtime'">Hotel cost</ng-container>
+                </label>
+                <input [(ngModel)]="chapter.budget" name="budget" type="text" class="form-control" id="chapterBudget">
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <button class="simpleBtn simpleBtn--success" [disabled]="f.invalid">
+            <ng-container *ngIf="_chapterId">Save changes</ng-container>
+            <ng-container *ngIf="! _chapterId">Create</ng-container>
+        </button>
+        <button type="button" class="simpleBtn simpleBtn--danger" (click)="doneEditing()">Cancel</button>
+    </footer>
+</form>

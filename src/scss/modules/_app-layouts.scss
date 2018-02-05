@@ -1,0 +1,135 @@
+.page {
+    @include media-breakpoint-up(xl) {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 101;
+        height: auto;
+    }
+}
+
+.pageRow {
+    &.mapLayout {
+        @include media-breakpoint-up(lg) {
+            min-height: 100%;
+            display: flex;
+            flex-grow: 1;
+        }    
+    }
+    @include media-breakpoint-up(xl) {
+        min-height: 100%;
+        display: flex;
+        flex-grow: 1;
+    }
+    @include media-breakpoint-down(xl) {
+        display: block;
+    }
+}
+.row {
+    flex-grow: 1;
+}
+
+/* -------- ✂ -------- */
+
+.layoutHeader {
+    text-align: center;
+    border-bottom: $border;
+    padding-bottom: $padding-default;
+    background: rgba(210, 210, 210, 0.15);
+
+}
+@include media-breakpoint-up(xl) {
+    .layoutHeader {
+        border-bottom: none;
+        border-right: $border;
+    }
+}
+
+/* -------- ✂ -------- */
+
+.mapLayout {
+    &__map {
+        padding: 0;
+        background-color: $color-primary-dark;
+        height: 60vh;
+    }
+    .mapContainer {
+        width: 100%;
+        height: 100%;
+    }
+}
+@include media-breakpoint-up(md) {
+    .mapLayout {
+        &__map {
+            height: 45vh;
+        }
+    }
+}
+@include media-breakpoint-up(lg) {
+    .mapLayout {
+        &__map {
+            height: 100vh;
+        }
+        .mapContainer {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: calc((100% - #{$width-appheader-desktop}) * 0.5);
+        }
+
+        &--left {
+            .mapLayout__map {
+                padding-left: 0;
+                padding-right: 0;
+
+            }
+            .mapContainer {
+                border-right: $border;
+            }
+        }
+
+        &--right {
+            flex-direction: row-reverse;
+
+            .mapLayout__map {
+                padding-right: 0;
+                padding-left: 0;
+            }
+            .mapContainer {
+                border-left: $border;
+                right: 0;
+            }
+        }
+    }
+}
+
+/* -------- ✂ -------- */
+
+.pageHeader {
+    margin: 0;
+    padding: 17px 0;
+    line-height: 44px;
+
+    &--icon {
+        padding-left: 55px;
+        position: relative;
+    }
+    &__title {
+        margin: 0;
+        line-height: 32px;
+        padding: 6px 0;
+    }
+    &__icon {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        background-color: $color-primary-dark;
+        display: block;
+        width: 44px;
+        height: 44px;
+        font-size: 32px;
+        line-height: 44px;
+        text-align: center;
+    }
+}

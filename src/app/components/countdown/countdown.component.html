@@ -1,0 +1,19 @@
+<div class="countdown" *ngIf="hasFutureTrips">
+    <div class="countdown__icon">
+        <i class="icon-clock"></i>
+    </div>
+    <h3 class="countdown__subtitle">Your next trip</h3>
+    <h2 class="countdown__title">{{ title }}</h2>
+    <h3 class="countdown__subtitle">starts in:</h3>
+
+    <div class="countdown__clock">
+        <div>
+            <span class="countdown__days">{{ days }}</span>
+            <span class="countdown__label">d</span>
+        </div>
+        <div>
+            <span class="countdown__hours">{{ hours }}</span>
+            <span class="countdown__label">h</span>
+        </div>
+    </div>
+</div>

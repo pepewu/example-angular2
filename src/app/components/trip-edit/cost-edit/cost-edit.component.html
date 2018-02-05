@@ -1,0 +1,36 @@
+<h1 class="modalHeader">
+    <ng-container *ngIf="!cost.id">Create new cost</ng-container>
+    <ng-container *ngIf="cost.id">Edit cost details</ng-container>
+</h1>
+
+<form #f="ngForm" (ngSubmit)="submit()">
+    <div class="form-group">
+        <label for="costName">Cost name</label>
+        <input #costName="ngModel" [(ngModel)]="cost.name" name="name" type="text" class="form-control" id="costName" required>
+        <ng-container *ngIf="costName.invalid && costName.touched">
+            <div class="invalid-feedback" *ngIf="costName.errors.required">
+                Please provide cost name.
+            </div>
+        </ng-container>
+    </div>
+
+    <div class="form-group">
+        <label for="costCost">Cost value</label>
+        <input #costCost="ngModel" [(ngModel)]="cost.cost" name="cost" type="number" class="form-control" id="costCost" required min="0">
+        <ng-container *ngIf="costCost.invalid && costCost.touched">
+            <div class="invalid-feedback" *ngIf="costCost.errors.required">
+                Please provide cost value.
+            </div>
+        </ng-container>
+    </div>
+
+    <div class="form-group">
+        <label for="costDescription">Cost description</label>
+        <textarea [(ngModel)]="cost.description" name="description" class="form-control" id="costDescription" rows="6"></textarea>
+    </div>
+
+    <button class="simpleBtn simpleBtn--primary" [disabled]="f.invalid">
+        <ng-container *ngIf="!cost.id">Create cost</ng-container>
+        <ng-container *ngIf="cost.id">Update cost</ng-container>
+    </button>
+</form>

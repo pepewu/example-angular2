@@ -1,0 +1,188 @@
+<div class="row">
+    <div class="col-12">
+        <header class="pageHeader pageHeader--icon">
+            <h1 class="pageHeader__title">
+                <span class="pageHeader__icon">
+                    <i class="icon-globe"></i>
+                </span>
+                {{ trip.name || 'Loading...' }}
+            </h1>
+        </header>
+        
+        <div class="headerTools">
+            <div class="headerTools__row">
+                <div class="headerTools__item">
+                    <i class="icon-money"></i>Budget assigned: {{ (trip.budgetAssigned | currency:'USD':true) || 0 }}
+                </div>
+                <div class="headerTools__item">
+                    <a routerLink="/trips/tripedit/{{ trip.$key }}" class="simpleBtn"><i class="icon-pencil"></i>Edit this trip</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="chapters.length; else nothingHere" style="flex-grow:1" [@listAnimation]="chapters.length">
+        <div class="tripTL col-12" *ngFor="let chapter of chapters" [ngSwitch]="chapter.type">
+            <div id="timeline"></div>
+        
+            <div class="row no-gutters tripTL__dayHeader animitem" *ngSwitchCase="'dateHeader'">
+                <div class="col-lg-4 tripTL__dayHeader__l"></div>
+                <div class="col-lg-1 tripTL__branch">
+                    <div class="calendarCard">
+                        <span class="calendarCard__year">{{ chapter.startTimestamp | date:'y' }}</span>
+                        <span class="calendarCard__day">{{ chapter.startTimestamp | date:'dd' }}</span>
+                        <span class="calendarCard__month">{{ chapter.startTimestamp | date:'MMMM' }}</span>
+                    </div>
+                </div>
+                <div class="col-lg-7 tripTL__dayHeader__r"></div>
+            </div>
+        
+            <div class="row no-gutters animitem" *ngSwitchCase="'travel'">
+                <div class="col-lg-4">
+                    <div class="chapterCard chapterCard--travel">
+                        <div class="chapterCard__typebar">
+                            <i class="icon-{{ travelTypes[chapter.travelType].icon }}"></i>
+                        </div>
+                        <div class="chapterCard__contentWrap">
+                            <div class="chapterCard__header">
+                                <ul>
+                                    <li>
+                                        <i class="icon-clock"></i>
+                                        {{ chapter.startTimestamp | date:'HH:mm' }}
+                                    </li><li *ngIf="chapter.budget">
+                                        <i class="icon-money"></i>
+                                        {{ chapter.budget | currency:'USD':true }}
+                                    </li><li class="type">{{ chapter.travelType | uppercase }}</li>
+                                </ul>
+                            </div>
+                            <div class="chapterCard__content">
+                                <h2>{{ chapter.title }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1 tripTL__branch tripTL__branch--l"></div>
+            </div>
+        
+            <div class="row no-gutters animitem" *ngSwitchCase="'bedtime'">
+                <div class="col-lg-4">
+                    <div class="chapterCard chapterCard--bedtime">
+                        <div class="chapterCard__typebar">
+                            <i class="icon-lodging"></i>
+                        </div>
+                        <div class="chapterCard__contentWrap">
+                            <div class="chapterCard__header">
+                                <ul>
+                                    <li>
+                                        <i class="icon-clock"></i>
+                                        {{ chapter.startTimestamp | date:'HH:mm' }}
+                                    </li><li *ngIf="chapter.budget">
+                                        <i class="icon-money"></i>
+                                        {{ chapter.budget | currency:'USD':true }}
+                                    </li><li class="type">BEDTIME</li>
+                                </ul>
+                            </div>
+                            <div class="chapterCard__content">
+                                <h2>{{ chapter.title }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1 tripTL__branch tripTL__branch--l"></div>
+            </div>
+        
+            <div class="row no-gutters animitem" *ngSwitchCase="'flanering'">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-1 tripTL__branch tripTL__branch--r"></div>
+                <div class="col-lg-7">
+                    <div class="chapterCard chapterCard--flanering">
+                        <div class="chapterCard__typebar" [style.background]="citiesData[chapter.travelCity].color">
+                            <i class="icon-city-hall"></i>
+                        </div>
+                        <div class="chapterCard__contentWrap">
+                            <div class="chapterCard__header">
+                                <ul>
+                                    <li>
+                                        <i class="icon-clock"></i>
+                                        {{ chapter.startTimestamp | date:'HH:mm' }}
+                                    </li><li *ngIf="chapter.budget">
+                                        <i class="icon-money"></i>
+                                        {{ chapter.budget | currency:'USD':true }}
+                                    </li><li class="type">
+                                        <i class="icon-location"></i>
+                                         {{ citiesData[chapter.travelCity].name | uppercase }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="chapterCard__content">
+                                <h2>{{chapter.title}}</h2>
+            
+                                <section class="chapterCard__section" *ngIf="chapter.places">
+                                    <h3>Places to visit</h3>
+                                    <table class="dataTable">
+                                        <tr *ngFor="let place of chapter.places">
+                                            <td>{{ place.placeName }}</td>
+                                        </tr>
+                                    </table>
+                                </section>
+            
+                                <section class="chapterCard__section" *ngIf="chapter.events">
+                                    <h3>Events</h3>
+                                    <table class="dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th class="info">
+                                                    <i class="icon-clock"></i>
+                                                </th>
+                                                <th class="info">
+                                                    <i class="icon-money"></i>
+                                                </th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tr *ngFor="let event of chapter.events">
+                                            <td class="info">{{ event.start }}</td>
+                                            <td class="info">{{ event.cost | currency:'USD':true }}</td>
+                                            <td>{{ event.name }}</td>
+                                        </tr>
+                                    </table>
+                                </section>
+            
+                                <section class="chapterCard__section" *ngIf="chapter.costs">
+                                    <h3>Costs</h3>
+                                    <table class="dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th class="info">
+                                                    <i class="icon-money"></i>
+                                                </th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tr *ngFor="let cost of chapter.costs">
+                                            <td class="info">{{ cost.cost | currency:'USD':true }}</td>
+                                            <td>{{ cost.name }}</td>
+                                        </tr>
+                                    </table>
+                                </section>
+            
+                                <a class="simpleBtn simpleBtn--success" routerLink="/trips/tripview/{{ tripId }}/{{ chapter.id }}">View map and details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #nothingHere>
+        <div class="nothingHere nothingHere--positionStatic" *ngIf="hasNoContent">
+            <i class="icon-flaneur"></i>
+            <p>You haven't planned anything for this trip yet.
+                <br>Start by adding first chapter.</p>
+            <a class="simpleBtn simpleBtn--primary" routerLink="/trips/tripedit/{{ tripId }}">Create trip content</a>
+        </div>
+    </ng-template>
+
+</div>
+

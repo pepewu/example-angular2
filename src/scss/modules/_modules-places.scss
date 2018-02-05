@@ -1,0 +1,127 @@
+.cityBox {
+    // padding-left: 15px;
+    position: relative;
+
+    // .cityColor {
+    //    position: absolute;
+    //    width: 15px;
+    //    height: 100%;
+    //    top: 0;
+    //    left: 0; 
+    //    background: $color-accent;
+    // }
+}
+
+/* -------- ✂ -------- */
+
+.placeLabel {
+    display: block;
+    padding: 5px 5px 5px 50px;
+    cursor: pointer;
+    background-color: #fff;
+    margin: 0 0 5px 0;
+    transition: all 0.25s ease-in-out;
+    line-height: 36px;
+    position: relative;
+
+    .placeTypeIcon {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+    }
+
+    &:hover {
+        background-color: $color-primary-light;
+    }
+    &.active {
+        background-color: $color-primary;
+    }
+
+    @include media-breakpoint-up(md) {
+        line-height: 34px;
+    }
+}
+
+/* -------- ✂ -------- */
+
+.placeTypeIcon {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 20px;
+    background-color: $color-primary-dark;
+    margin-right: 10px;
+
+    @include media-breakpoint-up(md) {
+        width: 34px;
+        height: 34px;
+        line-height: 34px;
+    }
+}
+
+/* -------- ✂ -------- */
+
+.placeEntry {
+    display: flex;
+    
+    align-items: stretch;
+
+    &:last-child {
+        .placeEntry__title, .placeEntry__marker {
+            border: none;
+        }
+    }
+    .placeTypeIcon {
+        display: block;
+        height: auto;
+        width: 36px;
+        min-height: 32px;
+        position: relative;
+        margin: 0;
+        flex-shrink: 0;
+
+        i {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+        }
+    }
+    &__title {
+        line-height: 24px;
+        padding: 12px 10px;
+        flex-grow: 1;
+        transition: $transition;
+        cursor: pointer;
+        border-bottom: 1px solid $color-primary-light;
+        line-height: 20px;
+
+        &:hover {
+            background-color: $color-primary-light;
+        }
+    }
+
+    &__marker {
+        border-bottom: 1px solid $color-primary-light;
+        background-color: $color-primary-light;
+        cursor: pointer;
+        width: 36px;
+        flex-shrink: 0;
+    }
+}
+
+/* -------- ✂ -------- */
+
+.typesFilter {
+    &__filter {
+        cursor: pointer;
+
+        &.inactive {
+            opacity: 0.67;
+            background-color: #ccc !important;
+        }
+    }
+}

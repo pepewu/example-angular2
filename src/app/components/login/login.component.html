@@ -1,0 +1,138 @@
+<div class="row pageRow">
+    <div class="col-12 col-lg-6">
+        <header class="pageHeader">
+            <h1 class="pageHeader__title">Login or register</h1>
+        </header>
+        
+        <section class="contentSection">
+            <h2 class="contentSection__header">Login with email and password</h2>
+
+            <div class="contentBox contentBox--default">
+                <h3>Demo Account:</h3>
+                e-mail: <strong>demo@test.dev</strong><br>
+                pass: <strong>test123</strong>
+            </div>
+            <div class="contentBox contentBox--default">
+                <form #loginForm="ngForm" (ngSubmit)="loginWithEmailAndPassword(loginForm)">
+                    <div class="form-group">
+                        <label for="login1">E-mail address</label>
+                        <input type="text" name="email" ngModel #loginEmail="ngModel" class="form-control" id="login1" required email>
+                        <ng-container *ngIf="loginEmail.invalid && loginEmail.touched">
+                            <div class="invalid-feedback" *ngIf="loginEmail.errors.email">
+                                Please provide a valid e-mail address.
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login2">Password</label>
+                        <input type="password" name="password" ngModel #loginPassword="ngModel" class="form-control" id="login2" required>
+                        <ng-container *ngIf="loginPassword.invalid && loginPassword.touched">
+                            <div class="invalid-feedback" *ngIf="loginPassword.errors.required">
+                                Please provide a password.
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <div *ngIf="loginError" class="alert alert-danger">
+                        <ng-container *ngIf="loginError == 'general'">
+                            Something is wrong here. Your login failed. Please try again after refreshing this page. Are you cheating?
+                        </ng-container>
+                        <ng-container *ngIf="loginError == 'auth/invalid-email'">
+                             The email address is badly formatted.
+                        </ng-container>
+                        <ng-container *ngIf="loginError == 'auth/wrong-password'">
+                             The password is invalid. Please try again.
+                        </ng-container>
+                        <ng-container *ngIf="loginError == 'auth/user-not-found'">
+                             There is no user record corresponding to this identifier.
+                        </ng-container>
+                    </div>
+
+                    <button class="simpleBtn simpleBtn--primary" [disabled]="loginForm.invalid">Login</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="contentSection">
+            <h2 class="contentSection__header"><small>or</small> Connect with your social media account</h2>
+            <div class="contentBox contentBox--default">
+                <p>When logging for the first time your new Flaneur account will be created.</p>
+                <button class="simpleBtn simpleBtn--success" (click)="loginWithGoogle()">
+                    <i class="icon-google"></i>Login with Google</button>
+            </div>
+        </section>
+
+        <section class="contentSection">
+            <h2 class="contentSection__header">Do not have an account?<br>Create one with email and password</h2>
+            
+            <button class="simpleBtn simpleBtn--primary" (click)="toggleRegistration()" *ngIf="!regVisible">Show registration form</button>
+            
+            <div class="contentBox contentBox--default" *ngIf="regVisible">
+                <form #registerForm="ngForm" (ngSubmit)="registerWithEmailAndPassword(registerForm)">
+                    <div class="form-group">
+                        <label for="reg1">E-mail address</label>
+                        <input type="text" name="email" ngModel #regEmail="ngModel" class="form-control" id="reg1" required email>
+                        <ng-container *ngIf="regEmail.invalid && regEmail.touched">
+                            <div class="invalid-feedback" *ngIf="regEmail.errors.email">
+                                Please provide a valid e-mail address.
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg2">Password</label>
+                        <input type="password" name="password" ngModel #regPassword="ngModel" class="form-control" id="reg2" required minlength="6">
+                        <ng-container *ngIf="regPassword.invalid && regPassword.touched">
+                            <div class="invalid-feedback" *ngIf="regPassword.errors.required">
+                                Please provide a password.
+                            </div>
+                            <div class="invalid-feedback" *ngIf="regPassword.errors.minlength">
+                                Password should be at least 6 characters.
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg3">Repeat password</label>
+                        <input type="password" name="password2" ngModel #regPassword2="ngModel" class="form-control" id="reg3" required>
+                        <ng-container *ngIf="regPassword2.invalid && regPassword2.touched">
+                            <div class="invalid-feedback" *ngIf="regPassword2.errors.required">
+                                Please provide a password.
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg4">Prove that you are human. How much is {{ valDigit1 }} + {{ valDigit2 }}? (enter digits)</label>
+                        <input type="number" name="human" ngModel #human="ngModel" class="form-control" id="reg4" required>
+                        <ng-container *ngIf="human.invalid && human.touched">
+                            <div class="invalid-feedback" *ngIf="human.errors.required">Please provide a result.</div>
+                        </ng-container>
+                    </div>
+
+                    <div *ngIf="regError" class="alert alert-danger">
+                        <ng-container *ngIf="regError == 'general'">
+                            Something is wrong here. Your registration failed. Please try again after refreshing this page. Are you cheating?
+                        </ng-container>
+                        <ng-container *ngIf="regError == 'passwordMismatch'">
+                            Passwords do not match.
+                        </ng-container>
+                        <ng-container *ngIf="regError == 'wrongHuman'">
+                            Dude, {{ valDigit1 }} + {{ valDigit2 }} is not {{ registerForm.value.human }}...
+                        </ng-container>
+                        <ng-container *ngIf="regError == 'auth/weak-password'">
+                            Password should be at least 6 characters.
+                        </ng-container>
+                        <ng-container *ngIf="regError == 'auth/email-already-in-use'">
+                            The email address is already in use by another account.
+                        </ng-container>
+                    </div>
+
+                    <button class="simpleBtn simpleBtn--primary" [disabled]="registerForm.invalid">Register and login</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+</div>

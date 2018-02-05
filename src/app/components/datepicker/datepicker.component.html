@@ -1,0 +1,98 @@
+<div class="dpModal" [@popup]="isVisible ? 'poppedIn' : 'poppedOut'">
+    <div class="datepicker">
+        <header class="row">
+            <div class="col-2 icon">
+                <i class="icon-calendar"></i>
+            </div>
+            <div class="col-5">
+                <select tabindex="1" #firstFocus class="form-control" name="year" [(ngModel)]="innerDate.year" (change)="onMonthChange()">
+                    <option value="2016">2016</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                </select>
+            </div>
+
+            <div class="col-5">
+                <select tabindex="2" class="form-control" name="month" [(ngModel)]="innerDate.month" (change)="onMonthChange()">
+                    <option value="0">01</option>
+                    <option value="1">02</option>
+                    <option value="2">03</option>
+                    <option value="3">04</option>
+                    <option value="4">05</option>
+                    <option value="5">06</option>
+                    <option value="6">07</option>
+                    <option value="7">08</option>
+                    <option value="8">09</option>
+                    <option value="9">10</option>
+                    <option value="10">11</option>
+                    <option value="11">12</option>
+                </select>
+            </div>
+        </header>
+
+        <div class="row">
+            <div class="col-12">
+                <table class="weekDays">
+                    <tr>
+                        <td class="item">Mo</td>
+                        <td class="item">Tu</td>
+                        <td class="item">We</td>
+                        <td class="item">Th</td>
+                        <td class="item">Fr</td>
+                        <td class="item">Sa</td>
+                        <td class="item">Su</td>
+                    </tr>
+                </table>
+                
+                <table class="month" #month (click)="selectDay($event)">
+                
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2 icon">
+                <i class="icon-clock"></i>
+            </div>
+            <div class="col-5">
+                <select tabindex="3" class="form-control" name="hour" [(ngModel)]="innerDate.hour" (change)="onHourChange()">
+                    <option value="6">06</option>
+                    <option value="7">07</option>
+                    <option value="8">08</option>
+                    <option value="9">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="0">00</option>
+                    <option value="1">01</option>
+                    <option value="2">02</option>
+                    <option value="3">03</option>
+                    <option value="4">04</option>
+                    <option value="5">05</option>
+                </select>
+            </div>
+
+            <div class="col-5">
+                <input tabindex="4" class="form-control" type="number" name="min" step="1" min="0" max="59" [(ngModel)]="innerDate.min" (change)="onMinChange()">
+            </div>
+        </div>
+
+        <footer>
+            <button type="button" tabindex="5" class="simpleBtn simpleBtn--primary" (click)="donePicking()">Select</button>
+            <button type="button" tabindex="6" class="simpleBtn simpleBtn--danger" (click)="cancel()">Cancel</button>
+        </footer>
+    </div>
+</div>
+<div class="modalBackground" [@popupBg]="isVisible ? 'poppedIn' : 'poppedOut'"></div>
